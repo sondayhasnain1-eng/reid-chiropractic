@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reid Chiropractic · Book a session</title>
+    <meta
+      name="description"
+      content="Book an in-clinic chiropractic session with Dr Callum Reid in Stockbridge, Edinburgh. First visits are 45 minutes."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,520;9..144,620&family=Outfit:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="nav">
+      <a class="brand" href="#top">Reid Chiropractic</a>
+      <p class="nav-meta">Stockbridge, Edinburgh</p>
+      <a class="button button-small" id="nav-book" href="#book">Book Your Session</a>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">In-clinic care · Edinburgh</p>
+          <h1>Work and train without your back deciding the day.</h1>
+          <p class="lede">
+            Neck, back, and joint pain, assessed and treated in one clinic visit.
+            You leave with a plain plan for the days ahead.
+          </p>
+          <p class="next-open" id="next-open"></p>
+          <p class="hero-note">First visit, 45 minutes. Dr Callum Reid, 46.</p>
+        </div>
+        <figure class="portrait">
+          <svg viewBox="0 0 640 800" role="img" aria-labelledby="portraitTitle">
+            <title id="portraitTitle">Illustrated portrait of Dr Callum Reid</title>
+            <rect width="640" height="800" fill="#d9c7b0" />
+            <rect x="0" y="520" width="640" height="280" fill="#cbb79d" />
+            <ellipse cx="320" cy="250" rx="150" ry="176" fill="#e4c3a4" />
+            <path d="M170 230c12-120 90-170 150-170s140 54 152 170c-48-34-104-48-152-48s-104 16-150 48z" fill="#3f3a36" />
+            <path d="M196 246c28-18 54-24 78-16" fill="none" stroke="#6a645c" stroke-width="14" stroke-linecap="round" />
+            <path d="M444 246c-28-18-54-24-78-16" fill="none" stroke="#6a645c" stroke-width="14" stroke-linecap="round" />
+            <path d="M250 292c22-18 48-26 70-26s48 8 70 26" fill="none" stroke="#c49678" stroke-width="8" stroke-linecap="round" />
+            <ellipse cx="262" cy="300" rx="16" ry="12" fill="#2c3338" />
+            <ellipse cx="378" cy="300" rx="16" ry="12" fill="#2c3338" />
+            <path d="M292 368c18 16 40 16 56 0" fill="none" stroke="#a56d52" stroke-width="6" stroke-linecap="round" />
+            <path d="M300 392c8 10 32 10 40 0" fill="none" stroke="#a56d52" stroke-width="4" stroke-linecap="round" />
+            <path d="M248 430c24 28 120 28 144 0 8 36-28 62-72 62s-80-26-72-62z" fill="#c9a88a" />
+            <path d="M80 800c40-180 120-250 240-250s200 70 240 250" fill="#2a3136" />
+            <path d="M250 560c24-36 116-36 140 0" fill="#e4c3a4" />
+          </svg>
+          <figcaption>
+            <strong>Dr Callum Reid</strong>
+            <span>46 · Clinic in Stockbridge</span>
+          </figcaption>
+        </figure>
+        <form class="booker" id="book" novalidate>
+          <fieldset>
+            <legend>Visit</legend>
+            <div class="choices">
+              <label class="choice">
+                <input type="radio" name="visit" value="First visit" checked />
+                <span><strong>First visit</strong><small>45 minutes · £78</small></span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="visit" value="Follow-up" />
+                <span><strong>Follow-up</strong><small>25 minutes · £52</small></span>
+              </label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Reason</legend>
+            <div class="choices" id="reasons">
+              <button class="slot" type="button" data-reason="desk">Desk pain</button>
+              <button class="slot" type="button" data-reason="training">Training</button>
+              <button class="slot" type="button" data-reason="straight">A straight recommendation</button>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Next open times</legend>
+            <div class="slot-row" id="quick"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Day</legend>
+            <div class="slot-row" id="days"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Time</legend>
+            <div class="slot-row" id="times"></div>
+          </fieldset>
+          <p class="summary" id="summary"></p>
+          <p class="reassure">Treated in the same visit. No package sold at the door.</p>
+          <div class="fields">
+            <label>Name<input name="name" type="text" autocomplete="name" required /></label>
+            <label>Email<input name="email" type="email" autocomplete="email" /></label>
+            <label>Phone<input name="phone" type="tel" autocomplete="tel" /></label>
+          </div>
+          <p class="form-error" id="form-error" hidden>Add your name, one way to reach you, and an open time.</p>
+          <button class="button" id="submit-booking" type="submit">Book Your Session</button>
+          <aside class="confirm" id="confirm" hidden>
+            <p class="eyebrow">Session booked</p>
+            <h3 id="confirm-title"></h3>
+            <p id="confirm-detail"></p>
+            <p class="quiet">14 St Stephen Street, Stockbridge, Edinburgh. 0131 496 0128.</p>
+            <button class="text-button" type="button" id="book-another">Choose a different time</button>
+          </aside>
+        </form>
+      </section>
+
+      <section class="panel" id="who">
+        <div class="section-head">
+          <p class="eyebrow">Who books</p>
+          <h2>People who already know they need the appointment.</h2>
+        </div>
+        <div class="cards">
+          <button class="card" type="button" data-reason="desk">
+            <h3>The desk pain is back by Thursday</h3>
+            <p>Neck, mid-back, or a hip that tightens after a full day of sitting. You want it dealt with before next week looks the same.</p>
+          </button>
+          <button class="card" type="button" data-reason="training">
+            <h3>Training keeps getting postponed</h3>
+            <p>You lift, run, or go to class, and pain is making those sessions irregular. The visit is aimed at getting you back to them.</p>
+          </button>
+          <button class="card" type="button" data-reason="straight">
+            <h3>You want a straight recommendation</h3>
+            <p>New in the city or tired of vague advice. You get what is useful, what can wait, and whether another visit is actually needed.</p>
+          </button>
+        </div>
+        <p class="quiet">
+          Sudden weakness, numbness, or pain after an accident needs urgent medical care, not a routine booking.
+        </p>
+      </section>
+
+      <section class="panel visit" id="visit">
+        <div class="section-head">
+          <p class="eyebrow">The visit</p>
+          <h2>What happens in the room.</h2>
+        </div>
+        <ol class="steps">
+          <li>
+            <span>01</span>
+            <div>
+              <h3>The job you still need to do</h3>
+              <p>What hurts, what changed, and what work or training you need to manage this month.</p>
+            </div>
+          </li>
+          <li>
+            <span>02</span>
+            <div>
+              <h3>A clear assessment</h3>
+              <p>How you move, which area is irritated, and what is worth treating today.</p>
+            </div>
+          </li>
+          <li>
+            <span>03</span>
+            <div>
+              <h3>Treatment in the same visit</h3>
+              <p>Hands-on care while you are here. You are not sent away to decide later.</p>
+            </div>
+          </li>
+          <li>
+            <span>04</span>
+            <div>
+              <h3>A short plan</h3>
+              <p>What to change before the next time you sit, train, or come back. Follow-ups are booked only if they will help.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="panel proof" id="proof">
+        <div class="section-head">
+          <p class="eyebrow">Proof, kept plain</p>
+          <h2>Sixteen years in practice. Time is kept.</h2>
+        </div>
+        <dl class="facts">
+          <div>
+            <dt>16 years</dt>
+            <dd>In clinic, working with desk-based pain and people who train around a job.</dd>
+          </div>
+          <div>
+            <dt>45 minutes</dt>
+            <dd>First visit. Enough time to assess and treat. Later visits are 25 minutes.</dd>
+          </div>
+          <div>
+            <dt>One clinic</dt>
+            <dd>14 St Stephen Street, Stockbridge. Sessions are indoors, by appointment.</dd>
+          </div>
+        </dl>
+        <ul class="quotes">
+          <li>
+            <blockquote>I took the 7:30, was out before my first meeting, and knew what to do for the rest of the week.</blockquote>
+            <cite>Helen · finance, New Town</cite>
+          </li>
+          <li>
+            <blockquote>He said the hip did not need a long course. Two follow-ups, then I was training again.</blockquote>
+            <cite>Omar · engineer</cite>
+          </li>
+          <li>
+            <blockquote>I wanted someone who would not sell me a package at the door. He did not.</blockquote>
+            <cite>Priya · consultant</cite>
+          </li>
+        </ul>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <p>Reid Chiropractic · Dr Callum Reid · Stockbridge, Edinburgh</p>
+      <a id="footer-book" href="#book">Book Your Session</a>
+    </footer>
+    <a class="mobile-book" id="mobile-book" href="#book">Book Your Session</a>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
