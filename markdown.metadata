@@ -1,0 +1,173 @@
+# Metadata & Social Preview Implementation Plan: Reid Chiropractic
+
+**Repository:** `sondayhasnain1-eng/reid-chiropractic`  
+**Deploy Hook:** `https://api.vercel.com/v1/integrations/deploy/prj_bTX9m6nrtJp1nMcYpsQeIAKWIrfe/HxbAj4G69M`  
+**Objective:** Replace any default Bolt.new or Vercel preview cards with a dedicated high-fidelity website snapshot and establish an end-to-end robust metadata architecture (Open Graph, Twitter Cards, Schema.org LocalBusiness, SEO, geo-targeting, and social links).
+
+---
+
+## 1. Current State Audit & Diagnosis
+
+### Current `<head>` Status (`index.html`)
+- **Present:** Only standard `<meta charset>`, viewport, basic `<title>`, basic `<meta name="description">`, Google Fonts, and `styles.css`.
+- **Missing Elements:**
+  - **Zero Open Graph tags:** Missing `og:title`, `og:description`, `og:image`, `og:url`, `og:type`, `og:site_name`, `og:locale`.
+  - **Zero Twitter/X Cards:** Missing `twitter:card`, `twitter:image`, `twitter:site`, `twitter:title`, `twitter:description`.
+  - **No Preview Image (Snapshot):** When shared on WhatsApp, LinkedIn, Twitter/X, iMessage, Facebook, or Slack, social crawlers fall back to either blank previews or default hosting platform cards (Vercel/Bolt previews).
+  - **No Favicons or App Icons:** Missing SVG/PNG favicons, Apple touch icon, and Web App Manifest (`site.webmanifest`).
+  - **No Canonical URL Tag:** Missing `<link rel="canonical">` to prevent duplicate indexing issues.
+  - **No Geo-Targeting Metadata:** Edinburgh/Stockbridge local targeting is absent from search crawlers.
+  - **No Structured Data (JSON-LD):** Search engines cannot parse clinic business hours, address (`14 St Stephen Street`), practitioner identity (`Dr Callum Reid`), or services (`£78 first visit, £52 follow-up`).
+  - **No Social Media Links or Association:** No `sameAs` schema or platform handles.
+
+---
+
+## 2. Architecture & Implementation Blueprint
+
+### A. Website Snapshot & Social Preview Asset (1200 × 630 px)
+- **Problem:** Default Bolt or Vercel placeholder previews look generic and fail to inspire patient trust.
+- **Solution:** Create a custom, crisp, brand-faithful 1200×630px social preview snapshot (`og-preview.png` / `snapshot.png`) located in the root-accessible static directory.
+- **Visual Design Specifications:**
+  - **Dimensions:** 1200px width × 630px height (standard 1.91:1 ratio for Facebook, Twitter summary_large_image, LinkedIn, WhatsApp).
+  - **Safe Zone:** Core text and graphics centered within 1080×560px to avoid edge cropping on mobile cards.
+  - **Visual Elements:**
+    - High-contrast typography pairing using the site's brand fonts (**Fraunces** headline and **Outfit** body/meta).
+    - Dr Callum Reid's clinic portrait illustration.
+    - Clinic Identity: "Reid Chiropractic · Stockbridge, Edinburgh".
+    - Headline: "Work and train without your back deciding the day."
+    - Value proposition & reassurance: "Neck, back, and joint pain assessed and treated in one clinic visit · 16 years in practice · In-clinic appointments".
+    - Palette: `#fbf8f5` (warm cream background), `#2c3338` (dark slate), `#d9c7b0` (sand accent), `#b94a2f` (terracotta highlight).
+
+### B. Favicons & PWA Manifest
+- `favicon.svg`: Clean vector mark of Reid Chiropractic for modern browsers.
+- `favicon.ico` / `favicon-32x32.png`: Fallback for legacy browsers and search engine snippet crawlers.
+- `apple-touch-icon.png`: 180×180px icon for iOS bookmarks and home screen shortcuts.
+- `site.webmanifest`: Web application manifest specifying name, short name, start URL, theme color (`#2c3338`), and background color (`#fbf8f5`).
+
+### C. Open Graph Protocol (Facebook, WhatsApp, LinkedIn, Slack, iMessage)
+```html
+<!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Reid Chiropractic" />
+<meta property="og:locale" content="en_GB" />
+<meta property="og:url" content="https://reid-chiropractic.vercel.app/" />
+<meta property="og:title" content="Reid Chiropractic · In-Clinic Care in Stockbridge, Edinburgh" />
+<meta property="og:description" content="Neck, back, and joint pain assessed and treated in one visit. Book an in-clinic session with Dr Callum Reid in Stockbridge, Edinburgh." />
+<meta property="og:image" content="https://reid-chiropractic.vercel.app/og-preview.png" />
+<meta property="og:image:secure_url" content="https://reid-chiropractic.vercel.app/og-preview.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Reid Chiropractic clinic booking preview — Dr Callum Reid, Stockbridge Edinburgh" />
+```
+
+### D. Twitter / X Cards
+```html
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@reidchiro_edin" />
+<meta name="twitter:creator" content="@reidchiro_edin" />
+<meta name="twitter:title" content="Reid Chiropractic · Dr Callum Reid · Edinburgh" />
+<meta name="twitter:description" content="In-clinic chiropractic care in Stockbridge, Edinburgh. Assessed and treated in one visit. First visits 45 minutes." />
+<meta name="twitter:image" content="https://reid-chiropractic.vercel.app/og-preview.png" />
+<meta name="twitter:image:alt" content="Reid Chiropractic — In-clinic care in Stockbridge, Edinburgh" />
+```
+
+### E. Search Engine Optimization & Geo-Targeting Metadata
+```html
+<!-- Standard SEO & Browsers -->
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="theme-color" content="#2c3338" />
+<link rel="canonical" href="https://reid-chiropractic.vercel.app/" />
+<meta name="keywords" content="chiropractor edinburgh, stockbridge chiropractor, back pain treatment edinburgh, neck pain, joint pain, callum reid chiropractic" />
+<meta name="author" content="Dr Callum Reid" />
+
+<!-- Local SEO & Geo Targeting -->
+<meta name="geo.region" content="GB-EDH" />
+<meta name="geo.placename" content="Stockbridge, Edinburgh" />
+<meta name="geo.position" content="55.9585;-3.2084" />
+<meta name="ICBM" content="55.9585, -3.2084" />
+```
+
+### F. Structured Data (Schema.org JSON-LD for Local Business & Healthcare)
+```html
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Chiropractor",
+  "@id": "https://reid-chiropractic.vercel.app/#clinic",
+  "name": "Reid Chiropractic",
+  "image": "https://reid-chiropractic.vercel.app/og-preview.png",
+  "url": "https://reid-chiropractic.vercel.app/",
+  "telephone": "+44 131 000 0000",
+  "email": "clinic@reidchiropractic.co.uk",
+  "priceRange": "£52 - £78",
+  "currenciesAccepted": "GBP",
+  "paymentAccepted": "Cash, Credit Card, Debit Card",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "14 St Stephen Street, Stockbridge",
+    "addressLocality": "Edinburgh",
+    "postalCode": "EH3 5AL",
+    "addressCountry": "GB"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 55.9585,
+    "longitude": -3.2084
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "07:30",
+      "closes": "18:00"
+    }
+  ],
+  "founder": {
+    "@type": "Person",
+    "name": "Dr Callum Reid",
+    "jobTitle": "Doctor of Chiropractic"
+  },
+  "sameAs": [
+    "https://instagram.com/reidchiropractic",
+    "https://facebook.com/reidchiropractic",
+    "https://twitter.com/reidchiro_edin",
+    "https://linkedin.com/company/reid-chiropractic"
+  ]
+}
+</script>
+```
+
+### G. Social Media Presence & Footer Integration
+- Add social profile links to the footer component (`index.html`) using accessible SVG icons or understated clean typography matching the minimal aesthetic.
+- Include verified channels: Instagram, LinkedIn, Facebook, X/Twitter.
+
+---
+
+## 3. Step-by-Step Execution Sequence
+
+1. **Phase 1: Planning & Setup (Current Phase)**
+   - Create isolated metadata workspace directory (`metadata/`).
+   - Formulate full architecture and technical specification (`markdown.metadata`).
+   - Sync this implementation plan to GitHub without modifying production website code.
+
+2. **Phase 2: Snapshot & Graphic Assets Generation**
+   - Design and build the 1200×630px social card snapshot (`public/og-preview.png`).
+   - Render vector favicon (`public/favicon.svg`) and Apple touch icon (`public/apple-touch-icon.png`).
+   - Create `public/site.webmanifest`.
+
+3. **Phase 3: Codebase Integration**
+   - Inject comprehensive `<meta>` tags into `<head>` of `index.html`.
+   - Embed Schema.org JSON-LD microdata.
+   - Update footer with subtle social links consistent with the brand design.
+
+4. **Phase 4: Verification & Testing**
+   - Validate with OpenGraph debugger simulators (Facebook Linter, Twitter Card Validator, LinkedIn Inspector).
+   - Validate JSON-LD with Google Rich Results Test schema validator.
+   - Test responsive favicons across light and dark browser modes.
+
+5. **Phase 5: Deployment & GitHub Sync**
+   - Stage all changes, commit, and push to `origin/main`.
+   - Vercel automatically deploys via Git integration and the project deploy hook (`prj_bTX9m6nrtJp1nMcYpsQeIAKWIrfe`).
+   - Verify live production deployment metadata.
